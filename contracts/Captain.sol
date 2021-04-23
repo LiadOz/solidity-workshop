@@ -2,11 +2,14 @@
 pragma solidity ^0.7.3;
 pragma experimental ABIEncoderV2; // needed to return arrays
 
+import "https://github.com/LiadOz/solidity-workshop/blob/token/myToken.sol";
 
-contract Captain {
+contract Captain is myToken {
     
     uint MAX_SCORE = 100;
     uint START_SCORE = 80;
+    address CONTRACT_ADDRESS = address(this);
+
     struct User {
         bool active;
         uint solved;
@@ -49,6 +52,7 @@ contract Captain {
         puzzles.push(Puzzle(msg.sender, _p_string, _desc, _reward, _rating,
                             Solution(address(0), "", false)));
         users[msg.sender].puzzle_ids.push(puzzles.length - 1);
+        transfer(CONTRACT_ADDRESS, _reward);
         return puzzles.length - 1;
     }
 
@@ -59,7 +63,16 @@ contract Captain {
         if (p.sol.solved)
             return false;
         puzzles[_puzzle_id].sol = Solution(msg.sender, _solution, true);
+        transferFromContract(msg.sender, p.reward);
         users[msg.sender].solved++;
+        return true;
+    }
+
+    function transferFromContract(address to, uint tokensAmount) private returns (bool success) {
+        require(tokensAmount <= balances[CONTRACT_ADDRESS]);
+        balances[CONTRACT_ADDRESS] = safeSub(balances[CONTRACT_ADDRESS], tokensAmount);
+        balances[to] = safeAdd(balances[to], tokensAmount);
+        emit Transfer(CONTRACT_ADDRESS, to, tokensAmount);
         return true;
     }
 
