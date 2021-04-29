@@ -57,6 +57,15 @@ contract TagMe is Tags {
         return puzzles.length - 1;
     }
 
+    function postMultiplePuzzles(string[] memory _p_strings,
+                                 string memory _desc,
+                                 uint _reward_per_puzzle,
+                                 uint _rating) public userAction {
+        for (uint i = 0; i < _p_strings.length; ++i) {
+            postPuzzle(_p_strings[i], _desc, _reward_per_puzzle, _rating);
+        }
+    }
+
     function checkUser() public view returns(bool) {
         if (users[msg.sender].active)
             return true;
@@ -93,7 +102,8 @@ contract TagMe is Tags {
         return puzzles;
     }
 
-    function calculateRating(address _user) private view returns(uint) {
+    function calculateRating(address _user) public view returns(uint) {
+        require(users[_user].active);
         User memory user = users[_user];
         if (user.solved < 10)
             return START_SCORE;
