@@ -15,11 +15,11 @@ async function main() {
 
   // We get the contract to deploy
 
-    const Captain = await hre.ethers.getContractFactory("Captain");
-    const captain = await Captain.deploy()
-    await captain.deployed();
+    const TagMe = await hre.ethers.getContractFactory("TagMe");
+    const tag = await TagMe.deploy()
+    await tag.deployed();
 
-    console.log("Captain deployed to:", captain.address);
+    console.log("TagMe deployed to:", tag.address);
 }
 
 // We recommend this pattern to be able to use async/await everywhere

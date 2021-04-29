@@ -3,9 +3,9 @@ pragma solidity ^0.7.3;
 pragma experimental ABIEncoderV2; // needed to return arrays
 // EnumerableSet, EnumerableMap by OpenZeppelin
 
-import "contracts/myToken.sol";
+import "contracts/Tags.sol";
 
-contract Captain is myToken {
+contract TagMe is Tags {
     
     uint MAX_SCORE = 100;
     uint START_SCORE = 80;

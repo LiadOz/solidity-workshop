@@ -30,7 +30,7 @@ interface ERC20Interface {
 
 //-------------------------------------------------------------------------------------------------
 
-contract myToken is ERC20Interface, SafeMath {
+contract Tags is ERC20Interface, SafeMath {
     string public symbol;
     string public  name;
     uint8 public decimals;
