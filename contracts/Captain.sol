@@ -1,6 +1,7 @@
 //SPDX-License-Identifier: Unlicense
 pragma solidity ^0.7.3;
 pragma experimental ABIEncoderV2; // needed to return arrays
+// EnumerableSet, EnumerableMap by OpenZeppelin
 
 
 contract Captain {
@@ -50,6 +51,12 @@ contract Captain {
                             Solution(address(0), "", false)));
         users[msg.sender].puzzle_ids.push(puzzles.length - 1);
         return puzzles.length - 1;
+    }
+
+    function checkUser() public view returns(bool) {
+        if (users[msg.sender].active)
+            return true;
+        return false;
     }
 
     function postSolution(string memory _solution, uint _puzzle_id)
