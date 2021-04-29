@@ -46,7 +46,8 @@ contract myToken is ERC20Interface, SafeMath {
         name = "Tags";
         decimals = 2;
         _totalSupply = 100000;
-        balances[0xa36754cf5026012B010482d9a3bc581a5b583C6f] = _totalSupply;
+        balances[0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199] = 50000;
+        balances[0xdD2FD4581271e230360230F9337D5c0430Bf44C0] = 50000;
     }
 
     function totalSupply() public view override returns (uint) {

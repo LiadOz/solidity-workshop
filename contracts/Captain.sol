@@ -2,7 +2,7 @@
 pragma solidity ^0.7.3;
 pragma experimental ABIEncoderV2; // needed to return arrays
 
-import "https://github.com/LiadOz/solidity-workshop/blob/token/myToken.sol";
+import "contracts/myToken.sol";
 
 contract Captain is myToken {
     
