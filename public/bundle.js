@@ -187,11 +187,13 @@ class User {
 }
 
 window.addEventListener('load', function() {
-    if (typeof web3 !== 'undefined') {     
+    if (typeof web3 !== 'undefined') {
+         
         web3js = new Web3(web3.currentProvider);
+      } else {
+       
+       
       }
-    else {
-      }
+
     main();
 });
-

@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="bundle.js"></script>
+    <title>TagMe!</title>
+    <script language="javascript" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script language="javascript" type="text/javascript" src="web3.min.js"></script>
+    <!-- <script language="javascript" type="text/javascript" src="TagMe_abi.js"></script> -->
+  </head>
+  <body>
+    <ul class="nav justify-content-center">
+        <li class="nav-item">
+          <a class="nav-link home" href="/">HOME</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/add_puzzle">Add puzzle</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/view_puzzles">View puzzles</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/solver_view">Solve a puzzle</a>
+        </li>
+      </ul>
+  
+  
+    <button type="button" onclick="checkUser()"  class="btn btn-primary btn-lg btn-block">log in</button>
+    <button type="button" onclick="createUser()" class="btn btn-secondary btn-lg btn-block">sign in</button>
+  
+    <script>
+      function checkUser() {
+        if (app.userExists())
+          app.getUserPuzzles()
+      }
+    </script>
+  
+    <script>
+      function createUser() {
+        app.createNewUser();
+      }
+    </script>
+
+  </body>
+</html>

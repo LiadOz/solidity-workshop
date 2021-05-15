@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="bundle.js"></script>
+    <title>TagMe!</title>
+    <script language="javascript" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script language="javascript" type="text/javascript" src="web3.min.js"></script>
+    <!-- <script language="javascript" type="text/javascript" src="TagMe_abi.js"></script> -->
+  </head>
+  
+  
+  <body>
+
+    <script>
+        function getPuzzle() {
+            var puzzles = app.getSolveablePuzzles();    
+            if (puzzles.length > 0){
+                {
+                    puzzleId = puzzles.length   
+                }
+                puzzle = puzzles[puzzleId]
+                pic = puzzle.img
+                desc = puzzle.desc
+
+            }
+            document.getElementById('currentPuzzle').src = pic;
+            document.getElementById('currentPuzzle').text = desc;
+        }
+    </script>
+    <!-- <p>
+        <button type="button" onclick="getPuzzle()">Get Puzzle!</button>
+    </p> -->
+
+    <p>
+        <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample" onclick="getPuzzle()" aria-expanded="false" aria-controls="collapseExample">
+            Get Puzzle!
+        </button>
+    </p>
+    <div class="collapse" id="collapseExample">
+        <div class="card card-body">
+            <figure id="currentPuzzle" class="figure">
+                <img src="" class="figure-img img-fluid rounded" alt="A generic square placeholder image with rounded corners in a figure.">
+                <figcaption class="figure-caption" text=""></figcaption>
+            </figure>
+        </div>
+    </div>
+
+    <form id="frm2">
+        <div class="form-group">
+            <label for="description">Describe the puzzle</label>
+            <input type="text" class="form-control" id="solution" placeholder="Enter your description">
+        </div>
+        <button type="submit" onclick="addSolution()" class="btn btn-primary">Submit</button>
+    </form>
+
+    <script>
+        function addSolution() {
+            var solution = document.getElementById("solution");
+            var puzzleId = puzzleId;
+            app.postSolution(solution, puzzleId);
+        }
+    </script>
+
+  </body>
+</html>
+    
+
+    
+    
