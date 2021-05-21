@@ -9,39 +9,43 @@
     <script src="bundle.js"></script>
     <title>TagMe!</title>
     <script language="javascript" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script language="javascript" type="text/javascript" src="web3.min.js"></script>
+    <script src="https://cdn.ethers.io/lib/ethers-5.0.umd.min.js"
+            type="application/javascript"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+  </body>
+    <!-- <script language="javascript" type="text/javascript" src="web3.min.js"></script> -->
     <!-- <script language="javascript" type="text/javascript" src="TagMe_abi.js"></script> -->
   </head>
   <body>
-    <ul class="nav justify-content-center">
-        <li class="nav-item">
-          <a class="nav-link home" href="/">HOME</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="/add_puzzle">Add puzzle</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="/view_puzzles">View puzzles</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="/solver_view">Solve a puzzle</a>
-        </li>
-      </ul>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <ul class="nav justify-content-center">
+            <li class="nav-item">
+            <a class="nav-link home" href="/">HOME</a>
+            </li>
+            <li class="nav-item">
+            <a class="nav-link" href="/add_puzzle">Add puzzle</a>
+            </li>
+            <li class="nav-item">
+            <a class="nav-link" href="/view_puzzles">View puzzles</a>
+            </li>
+            <li class="nav-item">
+            <a class="nav-link" href="/solver_view">Solve a puzzle</a>
+            </li>
+        </ul>
+    </nav>
   
   
     <button type="button" onclick="checkUser()"  class="btn btn-primary btn-lg btn-block">log in</button>
     <button type="button" onclick="createUser()" class="btn btn-secondary btn-lg btn-block">sign in</button>
   
     <script>
-      function checkUser() {
-        if (app.userExists())
-          app.getUserPuzzles()
+      async function checkUser() {
+        if (await app.userExists())
+            alert("logged in");
       }
-    </script>
-  
-    <script>
-      function createUser() {
-        app.createNewUser();
+
+      async function createUser() {
+        await app.createNewUser();
       }
     </script>
 

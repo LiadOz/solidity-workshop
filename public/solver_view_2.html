@@ -9,29 +9,14 @@
     <script src="bundle.js"></script>
     <title>TagMe!</title>
     <script language="javascript" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script language="javascript" type="text/javascript" src="web3.min.js"></script>
+    <script src="https://cdn.ethers.io/lib/ethers-5.0.umd.min.js"
+            type="application/javascript"></script>
     <!-- <script language="javascript" type="text/javascript" src="TagMe_abi.js"></script> -->
   </head>
   
   
   <body>
 
-    <script>
-        function getPuzzle() {
-            var puzzles = app.getSolveablePuzzles();    
-            if (puzzles.length > 0){
-                {
-                    puzzleId = puzzles.length   
-                }
-                puzzle = puzzles[puzzleId]
-                pic = puzzle.img
-                desc = puzzle.desc
-
-            }
-            document.getElementById('currentPuzzle').src = pic;
-            document.getElementById('currentPuzzle').text = desc;
-        }
-    </script>
     <!-- <p>
         <button type="button" onclick="getPuzzle()">Get Puzzle!</button>
     </p> -->
@@ -41,14 +26,18 @@
             Get Puzzle!
         </button>
     </p>
-    <div class="collapse" id="collapseExample">
-        <div class="card card-body">
-            <figure id="currentPuzzle" class="figure">
-                <img src="" class="figure-img img-fluid rounded" alt="A generic square placeholder image with rounded corners in a figure.">
-                <figcaption class="figure-caption" text=""></figcaption>
-            </figure>
-        </div>
-    </div>
+    <!-- <div class="collapse" id="collapseExample"> -->
+    <!--     <div class="card card-body"> -->
+            <!-- <figure id="currentPuzzle" class="figure"> -->
+            <!--     <img src="" class="figure-img img-fluid rounded" alt="A generic square placeholder image with rounded corners in a figure."> -->
+            <!--     <figcaption class="figure-caption" text=""></figcaption> -->
+            <!-- </figure> -->
+
+
+            <!-- <img id="currentPuzzle" src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse2.mm.bing.net%2Fth%3Fid%3DOIP.NQ-7sjajm06lQAl4XiptPwHaHd%26pid%3DApi&f=1"></img> -->
+    <!--     </div> -->
+    <!-- </div> -->
+    <img id="currentPuzzle" src="" height="500" width="500">
 
     <form id="frm2">
         <div class="form-group">
@@ -58,15 +47,30 @@
         <button type="submit" onclick="addSolution()" class="btn btn-primary">Submit</button>
     </form>
 
+  </body>
+
     <script>
-        function addSolution() {
-            var solution = document.getElementById("solution");
-            var puzzleId = puzzleId;
-            app.postSolution(solution, puzzleId);
+      var puzzleId = -1;
+        async function addSolution() {
+            var solution = document.getElementById("solution").value;
+            console.log(solution, puzzleId)
+            await app.postSolution(solution, puzzleId);
         }
+        async function getPuzzle() {
+            var puzzles = await app.getSolveablePuzzles();    
+            if (puzzles.length > 0){
+                puzzleId = puzzles.length - 1;
+
+                const puzzle = puzzles[puzzleId];
+                const pic = puzzle.img;
+                const desc = puzzle.desc;
+                document.getElementById('currentPuzzle').src = pic;
+                document.getElementById('currentPuzzle').text = desc;
+            }
+        }
+
     </script>
 
-  </body>
 </html>
     
 

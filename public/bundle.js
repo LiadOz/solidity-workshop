@@ -1,21 +1,3 @@
-const app = new App();
-
-async function main() {
-    await app.init();
-    // await app.createUser();
-    // console.log(await app.userExists());
-    // await app.postPuzzle(
-    //     "https://thefunnybeaver.com/wp-content/uploads/2019/03/an29.jpg",
-    //     "animal ?", 5, 70);
-    // console.log(await app.getSolveablePuzzles());
-    // console.log(await app.getUserPuzzles());
-    // p = ['h', 'i', 'j', 'k'];
-    // await app.addPuzzles(p, 'letter stuff ?', 30, 81);
-    // await app.addPuzzles(p, 'letter stuff ?', 3, 71);
-    // console.log(await app.getRating());
-    // await app.postSolution("giraffe", 0);
-}
-
 class App {
 
     async init() {
@@ -187,13 +169,23 @@ class User {
 }
 
 window.addEventListener('load', function() {
-    if (typeof web3 !== 'undefined') {
-         
-        web3js = new Web3(web3.currentProvider);
-      } else {
-       
-       
-      }
-
     main();
 });
+
+const app = new App();
+
+async function main() {
+    await app.init();
+    // await app.createUser();
+    // console.log(await app.userExists());
+    // await app.postPuzzle(
+    //     "https://thefunnybeaver.com/wp-content/uploads/2019/03/an29.jpg",
+    //     "animal ?", 5, 70);
+    // console.log(await app.getSolveablePuzzles());
+    // console.log(await app.getUserPuzzles());
+    // p = ['h', 'i', 'j', 'k'];
+    // await app.addPuzzles(p, 'letter stuff ?', 30, 81);
+    // await app.addPuzzles(p, 'letter stuff ?', 3, 71);
+    // console.log(await app.getRating());
+    // await app.postSolution("giraffe", 0);
+}

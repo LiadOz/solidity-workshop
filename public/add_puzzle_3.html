@@ -7,6 +7,8 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <script src="bundle.js"></script>
+    <script src="https://cdn.ethers.io/lib/ethers-5.0.umd.min.js"
+            type="application/javascript"></script>
     <title>TagMe!</title>
   </head>
   <body>
@@ -36,12 +38,14 @@
 
     
     <script>
-    function addPuzzle() {
-        var puzzles = document.getElementById("InputUrl")
-        var desc = document.getElementById("InputDescription")
-        var reward = document.getElementById("InputReword")
-        var rating = document.getElementById("InputRating")
-        app.addPuzzles(puzzles, desc, reward, rating)
+    async function addPuzzle() {
+        var puzzles = document.getElementById("InputUrl").value;
+        var desc = document.getElementById("InputDescription").value;
+        var reward = document.getElementById("InputReword").value;
+        var rating = document.getElementById("InputRating").value;
+        console.log(puzzles, desc, reward, rating);
+
+        await app.addPuzzles(puzzles.split(","), desc, reward, rating);
     }
     </script>
     
