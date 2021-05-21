@@ -1,143 +1,49 @@
-<!DOCTYPE html>
-<html>
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+<!doctype html>
+<html lang="en">
   <head>
-    <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta content="utf-8" http-equiv="encoding">
-    <title>TagMe front-end</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="bundle.js"></script>
+    <title>TagMe!</title>
     <script language="javascript" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script language="javascript" type="text/javascript" src="web3.min.js"></script>
     <!-- <script language="javascript" type="text/javascript" src="TagMe_abi.js"></script> -->
-    
-    <style>
-        body {
-        font-family: "Lato", sans-serif;
-        }
-
-        .sidenav {
-        height: 100%;
-        width: 160px;
-        position: fixed;
-        z-index: 1;
-        top: 0;
-        left: 0;
-        background-color: #111;
-        overflow-x: hidden;
-        padding-top: 20px;
-        }
-
-        .sidenav a {
-        padding: 6px 8px 6px 16px;
-        text-decoration: none;
-        font-size: 25px;
-        color: #818181;
-        display: block;
-        }
-
-        .sidenav a:hover {
-        color: #f1f1f1;
-        }
-
-        .main {
-        margin-left: 160px; /* Same as the width of the sidenav */
-        font-size: 28px; /* Increased text to enable scrolling */
-        padding: 0px 10px;
-        }
-
-        @media screen and (max-height: 450px) {
-        .sidenav {padding-top: 15px;}
-        .sidenav a {font-size: 18px;}
-        }
-
-        .button {
-        padding: 15px 25px;
-        font-size: 24px;
-        text-align: center;
-        cursor: pointer;
-        outline: none;
-        color: #fff;
-        background-color: #04AA6D;
-        border: none;
-        border-radius: 15px;
-        box-shadow: 0 9px #999;
-        }
-        
-        .button:hover {background-color: #3e8e41}
-        
-        .button:active {
-        background-color: #3e8e41;
-        box-shadow: 0 5px #666;
-        transform: translateY(4px);
-    }
-    </style>
   </head>
-<body>
-
-    <div class="sidenav">
-        <a href="#HOME">HOME</a>
-        <a href="#UPLOAD PUZZLE">UPLOAD PUZZLE</a>
-        <a href="#SOLVE A PUZZLE!">SOLVE A PUZZLE!</a>
-    </div>
-
-    <div class="main">
-        <h2>TagMe</h2>
-        <p>This is the Home page of TagMe</p>
-        <p>
-            <button class="button">Create an acount</button>
-        </p>
-    </div>
-
-</body>
-<script src="https://cdn.ethers.io/lib/ethers-5.0.umd.min.js"
-        type="application/javascript"></script>
-<script src="./bundle.js" type="application/javascript"></script>
-</html> 
-
-
- 
-
   <body>
-    <div id="txStatus"></div>
-    <div id="zombies"></div>
-
+    <ul class="nav justify-content-center">
+        <li class="nav-item">
+          <a class="nav-link home" href="/">HOME</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/add_puzzle">Add puzzle</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/view_puzzles">View puzzles</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/solver_view">Solve a puzzle</a>
+        </li>
+      </ul>
+  
+  
+    <button type="button" onclick="checkUser()"  class="btn btn-primary btn-lg btn-block">log in</button>
+    <button type="button" onclick="createUser()" class="btn btn-secondary btn-lg btn-block">sign in</button>
+  
     <script>
-      var cryptoZombies;
-      var userAccount;
-
-      function startApp() {
-        var cryptoZombiesAddress = "YOUR_CONTRACT_ADDRESS";
-        cryptoZombies = new web3js.eth.Contract(cryptoZombiesABI, cryptoZombiesAddress);
-
-        var accountInterval = setInterval(function() {
-         
-          if (web3.eth.accounts[0] !== userAccount) {
-            userAccount = web3.eth.accounts[0];
-           
-            getZombiesByOwner(userAccount)
-            .then(displayZombies);
-          }
-        }, 100);
-
-        cryptoZombies.events.Transfer({ filter: { _to: userAccount } })
-        .on("data", function(event) {
-          let data = event.returnValues;
-          getZombiesByOwner(userAccount).then(displayZombies);
-        }).on("error", console.error);
+      function checkUser() {
+        if (app.userExists())
+          app.getUserPuzzles()
       }
-
-      
-        // $("#txStatus").text("Creating new zombie on the blockchain. This may take a while...");
-       
-        
-      window.addEventListener('load', function() {
-
-       
-        
-       
-        startApp()
-
-      })
     </script>
+  
+    <script>
+      function createUser() {
+        app.createNewUser();
+      }
+    </script>
+
   </body>
 </html>
