@@ -9,40 +9,79 @@
     <script src="bundle.js"></script>
     <title>TagMe!</title>
     <script language="javascript" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script language="javascript" type="text/javascript" src="web3.min.js"></script>
+    <script src="https://cdn.ethers.io/lib/ethers-5.0.umd.min.js"
+            type="application/javascript"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <!-- <script language="javascript" type="text/javascript" src="web3.min.js"></script> -->
     <!-- <script language="javascript" type="text/javascript" src="TagMe_abi.js"></script> -->
   </head>
   
-  <body>
-    <table class="table">
+  <body onload="checkUser()">
+
+  <nav class="nav justify-content-center">
+      <ul class="nav justify-content-center">
+          <li class="nav-item">
+          <a class="nav-link home" href="/">HOME</a>
+          </li>
+          <li class="nav-item">
+          <a class="nav-link" href="/add_puzzle">Add puzzle</a>
+          </li>
+          <li class="nav-item">
+          <a class="nav-link" href="/view_puzzles">View puzzles</a>
+          </li>
+          <li class="nav-item">
+          <a class="nav-link" href="/solver_view">Solve a puzzle</a>
+          </li>
+      </ul>
+  </nav>
+
+
+    <table class="table" id="viewTable">
         <thead>
           <tr>
-            <th scope="col">#</th>
-            <th scope="col">First</th>
-            <th scope="col">Last</th>
-            <th scope="col">Handle</th>
+            <th scope="col">Puzzle Id</th>
+            <th scope="col">The puzzle</th>
+            <th scope="col">Result</th>
+            <th scope="col">solver</th>
+            <th scope="col">dispute</th>
           </tr>
         </thead>
+
         <tbody>
-          <tr>
-            <th scope="row">1</th>
-            <td>Mark</td>
-            <td>Otto</td>
-            <td>@mdo</td>
-          </tr>
-          <tr>
-            <th scope="row">2</th>
-            <td>Jacob</td>
-            <td>Thornton</td>
-            <td>@fat</td>
-          </tr>
-          <tr>
-            <th scope="row">3</th>
-            <td>Larry</td>
-            <td>the Bird</td>
-            <td>@twitter</td>
-          </tr>
+          
         </tbody>
       </table>
+
+  <script>
+    userPuzzles = [];
+    Puzzles = await app.getUserPuzzles();
+    async function checkUser(){
+      var i;
+      if (await app.userExists()) {
+        userPuzzles = await app.getUserPuzzles();
+      }
+      if (userPuzzles.lenght > 0){
+        var table = document.getElementById("viewTable");
+        for (i = 0; i < userPuzzles.lenght; i++){
+          var row = table.insertRow(1);
+          var cell1 = row.insertCell(0);
+          var cell2 = row.insertCell(1);
+          var cell3 = row.insertCell(2);
+          var cell4 = row.insertCell(3);
+          var cell5 = row.insertCell(4);
+          var puzzleId = userPuzzles
+          cell1.innerHTML = "dont know if we need puzzle id";
+          cell2.innerHTML = userPuzzles[i].img;
+          cell3.innerHTML = userPuzzles[i].solution.result;
+          cell4.innerHTML = userPuzzles[i].solution.solver;
+          cell2.innerHTML = '<input type="checkbox" class="form-check-input" onclick="disputePuzzle()" >';
+        }
+      }  
+    }
+    async function disputePuzzle(puzzleId){
+      await app.disputePuzzle(puzzleId)
+    }
+    
+  </script>
   </body>
 </html>

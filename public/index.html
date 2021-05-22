@@ -12,12 +12,11 @@
     <script src="https://cdn.ethers.io/lib/ethers-5.0.umd.min.js"
             type="application/javascript"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-  </body>
     <!-- <script language="javascript" type="text/javascript" src="web3.min.js"></script> -->
     <!-- <script language="javascript" type="text/javascript" src="TagMe_abi.js"></script> -->
   </head>
-  <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <body onload="checkUser()">
+    <nav class="nav justify-content-center">
         <ul class="nav justify-content-center">
             <li class="nav-item">
             <a class="nav-link home" href="/">HOME</a>
@@ -34,16 +33,19 @@
         </ul>
     </nav>
   
-  
-    <button type="button" onclick="checkUser()"  class="btn btn-primary btn-lg btn-block">log in</button>
-    <button type="button" onclick="createUser()" class="btn btn-secondary btn-lg btn-block">sign in</button>
-  
+    <button id="signUpButton" type="button" onclick="createUser()" class="btn btn-secondary btn-lg btn-block">sign up</button>
+
     <script>
       async function checkUser() {
-        if (await app.userExists())
-            alert("logged in");
+        var signUpButten = document.getElementById("signUpButton");
+        if (await app.userExists()) {
+          window.alert("You log in to your existing account");
+          signUpButten.style.display = "none";
+        }
+        else{
+          signUpButten.style.display = "block";
+        }
       }
-
       async function createUser() {
         await app.createNewUser();
       }
