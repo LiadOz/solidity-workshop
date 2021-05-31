@@ -7,7 +7,7 @@ class App {
     }
 
     async reloadData() {
-        if (await this.userExists) {
+        if (await this.userExists()) {
             var ud = this.tm.getUserData();
             var puzzles = this.tm.getPuzzles();
             var rating = this.tm.getRating();
@@ -67,7 +67,7 @@ class App {
 
 class TagMe {
     async init() {
-        // await window.ethereum.enable(); // required by metamask or is it
+        await window.ethereum.enable(); // required by metamask or is it
 
         const provider = new ethers.providers.Web3Provider(window.ethereum);
         this.signer = provider.getSigner();
@@ -168,9 +168,9 @@ class User {
     }
 }
 
-window.addEventListener('load', function() {
-    main();
-});
+// window.addEventListener('load', function() {
+//     main();
+// });
 
 const app = new App();
 

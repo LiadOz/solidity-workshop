@@ -52,26 +52,31 @@
           <label for="InputRating">Rating</label>
           <input type="rating" class="form-control" id="InputRating" placeholder="Only solvers with a higher rating than this will be able to solve the puzzle">
         </div>
-        <button type="submit" onclick="addPuzzle()" class="btn btn-primary">Submit</button>
+        <button type="button" onclick="addPuzzle()" class="btn btn-primary">Submit</button>
     </form>
 
 
     
     <script>
     async function addPuzzle() {
+        console.log ("dfdfd")
         var puzzles = document.getElementById("InputUrl").value;
         var desc = document.getElementById("InputDescription").value;
         var reward = document.getElementById("InputReward").value;
         var rating = document.getElementById("InputRating").value;
         console.log(puzzles, desc, reward, rating);
-
+        
         await app.addPuzzles(puzzles.split(","), desc, reward, rating);
     }
 
+    function checkonclick(){
+      console.log("check ")
+    }
 
     async function checkUser() {
+      await main();
       console.log("here");
-        if (not (await app.userExists())) {
+        if ( ! (await app.userExists())) {
           console.log("not logeds");
           window.alert("You are not loged into an account, please log in or sign up");
           window.location.href = "/";

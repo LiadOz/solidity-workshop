@@ -54,15 +54,20 @@
 
   <script>
     userPuzzles = [];
-    Puzzles = app.getUserPuzzles();
+    
     async function checkUser(){
+      await main();
+      // Puzzles = await app.getUserPuzzles();
       var i;
+      console.log("here")
       if (await app.userExists()) {
         userPuzzles = await app.getUserPuzzles();
+        console.log(userPuzzles)
       }
-      if (userPuzzles.lenght > 0){
+      if (userPuzzles.length > 0){
+        console.log("here11")
         var table = document.getElementById("viewTable");
-        for (i = 0; i < userPuzzles.lenght; i++){
+        for (i = 0; i < userPuzzles.length; i++){
           var row = table.insertRow(1);
           var cell1 = row.insertCell(0);
           var cell2 = row.insertCell(1);
