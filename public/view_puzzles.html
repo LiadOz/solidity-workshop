@@ -54,7 +54,7 @@
 
   <script>
     userPuzzles = [];
-    Puzzles = await app.getUserPuzzles();
+    Puzzles = app.getUserPuzzles();
     async function checkUser(){
       var i;
       if (await app.userExists()) {
