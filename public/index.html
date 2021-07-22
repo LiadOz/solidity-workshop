@@ -37,6 +37,7 @@
 
     <script>
       async function checkUser() {
+          await main();
         var signUpButten = document.getElementById("signUpButton");
         if (await app.userExists()) {
           window.alert("You log in to your existing account");

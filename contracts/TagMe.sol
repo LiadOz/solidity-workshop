@@ -14,8 +14,11 @@ contract TagMe is Tags {
     struct User {
         bool active;
         uint solved;
-        uint disputes;
+        uint disputes; // number of puzzles solved that are disputed
         uint[] puzzle_ids;
+        uint created_puzzles_completed; // number of puzzles the user created
+                                        // that are solved
+        uint puzzles_disputed; // number of times the user has disputed others
     }
 
     struct Puzzle {
@@ -39,7 +42,7 @@ contract TagMe is Tags {
     function createUser() public {
         require(!users[msg.sender].active);
         uint[] memory ids;
-        users[msg.sender] = User(true, 0, 0, ids);
+        users[msg.sender] = User(true, 0, 0, ids, 0, 0);
     }
 
     modifier userAction {
@@ -75,12 +78,17 @@ contract TagMe is Tags {
     function postSolution(string memory _solution, uint _puzzle_id)
         public userAction returns (bool) {
         Puzzle memory p = puzzles[_puzzle_id];
+
+        // make sure the user can answer
         require(calculateRating(msg.sender) >= p.rating);
         if (p.sol.solved)
             return false;
+
         puzzles[_puzzle_id].sol = Solution(msg.sender, _solution, true);
         transferFromContract(msg.sender, p.reward);
+
         users[msg.sender].solved++;
+        users[p.issuer].created_puzzles_completed++;
         return true;
     }
 
@@ -95,7 +103,9 @@ contract TagMe is Tags {
     function disputePuzzle(uint _puzzle_id) public {
         Puzzle memory p = puzzles[_puzzle_id];
         require(msg.sender == p.issuer);
+
         users[p.sol.solver].disputes++;
+        users[p.issuer].puzzles_disputed++;
     }
 
     function getPuzzles() public view returns (Puzzle[] memory) {

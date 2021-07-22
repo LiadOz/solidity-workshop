@@ -46,8 +46,11 @@ contract Tags is ERC20Interface, SafeMath {
         name = "Tags";
         decimals = 2;
         _totalSupply = 100000;
-        balances[0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199] = 50000;
-        balances[0xdD2FD4581271e230360230F9337D5c0430Bf44C0] = 50000;
+        balances[0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266] = 20000;
+        balances[0x70997970C51812dc3A010C7d01b50e0d17dc79C8] = 20000;
+        balances[0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC] = 20000;
+        balances[0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199] = 20000;
+        balances[0xdD2FD4581271e230360230F9337D5c0430Bf44C0] = 20000;
     }
 
     function totalSupply() public view override returns (uint) {

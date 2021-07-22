@@ -7,7 +7,7 @@ class App {
     }
 
     async reloadData() {
-        if (await this.userExists) {
+        if (await this.userExists()) {
             var ud = this.tm.getUserData();
             var puzzles = this.tm.getPuzzles();
             var rating = this.tm.getRating();
@@ -169,7 +169,7 @@ class User {
 }
 
 window.addEventListener('load', function() {
-    main();
+    // main();
 });
 
 const app = new App();
