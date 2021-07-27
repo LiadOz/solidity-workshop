@@ -41,20 +41,16 @@ async function setupUsers(contract) {
     await cws5.createUser();
     	
     await cws1.postMultiplePuzzles(
-        ["https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.medicalnewstoday.com%2Farticles%2F322868&psig=AOvVaw10UPBeXhKPjWj8ygwttVbR&ust=1627030388799000&source=images&cd=vfe&ved=0CAoQjRxqFwoTCMDw6tSm9vECFQAAAAAdAAAAABAD",
-         "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.medicalnewstoday.com%2Farticles%2F322868&psig=AOvVaw10UPBeXhKPjWj8ygwttVbR&ust=1627030388799000&source=images&cd=vfe&ved=0CAoQjRxqFwoTCMDw6tSm9vECFQAAAAAdAAAAABAD",
-         "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.medicalnewstoday.com%2Farticles%2F322868&psig=AOvVaw10UPBeXhKPjWj8ygwttVbR&ust=1627030388799000&source=images&cd=vfe&ved=0CAoQjRxqFwoTCMDw6tSm9vECFQAAAAAdAAAAABAD",
-         "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.medicalnewstoday.com%2Farticles%2F322868&psig=AOvVaw10UPBeXhKPjWj8ygwttVbR&ust=1627030388799000&source=images&cd=vfe&ved=0CAoQjRxqFwoTCMDw6tSm9vECFQAAAAAdAAAAABAD",
+        ["https://www.treehugger.com/thmb/T7LvwJkCaDL7D6yK60528f3Ooj4=/667x1000/filters:fill(auto,1)/__opt__aboutcom__coeus__resources__content_migration__mnn__images__2014__06__shutterstock_64983883-3801a7a9fc014d719036edaf33a31189.jpg",
+         "http://www.viralfancy.com/wp-content/uploads/2017/06/Bullmastiff.jpg",
+         "https://firstvet.com/uploaded/images/articles/_1200x600_crop_center-center_none/hypothyroid-dog.jpg",
          "https://cdn.britannica.com/22/206222-131-E921E1FB/Domestic-feline-tabby-cat.jpg",
-         "https://images.theconversation.com/files/350865/original/file-20200803-24-50u91u.jpg?ixlib=rb-1.1.0&rect=37%2C29%2C4955%2C3293&q=45&auto=format&w=926&fit=clip",
         "https://images.theconversation.com/files/350865/original/file-20200803-24-50u91u.jpg?ixlib=rb-1.1.0&rect=37%2C29%2C4955%2C3293&q=45&auto=format&w=926&fit=clip"],
         "Dog or a cat?", 500, 75);
     await cws2.postMultiplePuzzles(
         ["https://ichef.bbci.co.uk/news/976/cpsprodpb/133D9/production/_98690887_gettyimages-92280592.jpg",
-         "https://ichef.bbci.co.uk/news/976/cpsprodpb/133D9/production/_98690887_gettyimages-92280592.jpg",
-         "https://ichef.bbci.co.uk/news/976/cpsprodpb/133D9/production/_98690887_gettyimages-92280592.jpg",
-         "https://en.wikipedia.org/wiki/File:Gallotia_intermedia_38225983.jpg",
-         "https://en.wikipedia.org/wiki/File:Gallotia_intermedia_38225983.jpg",
+         "https://www.publicdomainpictures.net/pictures/280000/velka/frilled-lizard-1538482186mzE.jpg",
+         "https://telepathicstuntman.com/wp-content/uploads/2017/08/western-sagebrush-lizard.jpg",
          "https://www.macmillandictionary.com/external/slideshow/thumb/lizard_thumb.jpg"],
         "Koala or lizard", 300, 80);
     await cws3.postMultiplePuzzles(

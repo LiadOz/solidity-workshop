@@ -54,15 +54,16 @@
 
   <script>
     userPuzzles = [];
-    Puzzles = app.getUserPuzzles();
     async function checkUser(){
+        await main();
       var i;
       if (await app.userExists()) {
         userPuzzles = await app.getUserPuzzles();
+          console.log(userPuzzles)
       }
-      if (userPuzzles.lenght > 0){
+      if (userPuzzles.length > 0){
         var table = document.getElementById("viewTable");
-        for (i = 0; i < userPuzzles.lenght; i++){
+        for (i = 0; i < userPuzzles.length; i++){
           var row = table.insertRow(1);
           var cell1 = row.insertCell(0);
           var cell2 = row.insertCell(1);
@@ -70,11 +71,11 @@
           var cell4 = row.insertCell(3);
           var cell5 = row.insertCell(4);
           var puzzleId = userPuzzles
-          cell1.innerHTML = "dont know if we need puzzle id";
+          cell1.innerHTML = userPuzzles[i].id;
           cell2.innerHTML = userPuzzles[i].img;
           cell3.innerHTML = userPuzzles[i].solution.result;
           cell4.innerHTML = userPuzzles[i].solution.solver;
-          cell2.innerHTML = '<input type="checkbox" class="form-check-input" onclick="disputePuzzle()" >';
+          cell5.innerHTML = '<input type="checkbox" class="form-check-input" onclick="disputePuzzle()" >';
         }
       }  
     }

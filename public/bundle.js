@@ -111,8 +111,8 @@ class TagMe {
     async getPuzzles() {
         const puzzles = await this.contract.getPuzzles();
         var parsed = [];
-        for(let puzzle of puzzles) {
-            parsed.push(new Puzzle(puzzle));
+        for (var i = 0; i < puzzles.length; i++) {
+            parsed.push(new Puzzle(puzzles[i], i));
         }
         return parsed;
     }
@@ -126,13 +126,14 @@ class TagMe {
 }
 
 class Puzzle {
-    constructor(object) {
+    constructor(object, id) {
         this.issuer = object[0];
         this.img = object[1];
         this.desc = object[2];
         this.reward = object[3].toNumber();
         this.rating = object[4].toNumber();
         this.solution = new Solution(object[5]);
+        this.id = id;
     }
 
     isSolved() {
@@ -176,16 +177,4 @@ const app = new App();
 
 async function main() {
     await app.init();
-    // await app.createUser();
-    // console.log(await app.userExists());
-    // await app.postPuzzle(
-    //     "https://thefunnybeaver.com/wp-content/uploads/2019/03/an29.jpg",
-    //     "animal ?", 5, 70);
-    // console.log(await app.getSolveablePuzzles());
-    // console.log(await app.getUserPuzzles());
-    // p = ['h', 'i', 'j', 'k'];
-    // await app.addPuzzles(p, 'letter stuff ?', 30, 81);
-    // await app.addPuzzles(p, 'letter stuff ?', 3, 71);
-    // console.log(await app.getRating());
-    // await app.postSolution("giraffe", 0);
 }

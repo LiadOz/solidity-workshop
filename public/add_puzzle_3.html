@@ -70,8 +70,9 @@
 
 
     async function checkUser() {
+        await main();
       console.log("here");
-        if (not (await app.userExists())) {
+        if (!(await app.userExists())) {
           console.log("not logeds");
           window.alert("You are not loged into an account, please log in or sign up");
           window.location.href = "/";
