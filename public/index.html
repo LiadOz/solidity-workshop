@@ -14,8 +14,7 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
     <!-- <script language="javascript" type="text/javascript" src="web3.min.js"></script> -->
     <!-- <script language="javascript" type="text/javascript" src="TagMe_abi.js"></script> -->
-  </head>
-  <body onload="checkUser()">
+
     <nav class="nav justify-content-center">
         <ul class="nav justify-content-center">
             <li class="nav-item">
@@ -33,18 +32,29 @@
         </ul>
     </nav>
   
-    <button id="signUpButton" type="button" onclick="createUser()" class="btn btn-secondary btn-lg btn-block">sign up</button>
+  </head>
+  <body onload="checkUser()">
+    <div class="jumbotron">
+      <h1 class="display-4">Welcome to TagMe!</h1>
+      <p class="lead">TagMe is a blockchain based image tagging tool to source
+      out image tagging called puzzles. You can create new image tagging requests or solve existing ones.</p>
+      <hr class="my-4">
+      <p id="userMessage">You are logged in to your account, you can start
+      posting and solving puzzles</p>
+      <button id="signUpButton" type="button" onclick="createUser()" class="btn
+      btn-secondary btn-lg btn-block" style="display: none;">Sign Up</button>
+    </div>
+
+  </body>
 
     <script>
       async function checkUser() {
           await main();
         var signUpButten = document.getElementById("signUpButton");
-        if (await app.userExists()) {
-          window.alert("You log in to your existing account");
-          signUpButten.style.display = "none";
-        }
-        else{
-          signUpButten.style.display = "block";
+        var userMessage = document.getElementById("userMessage");
+        if (!(await app.userExists())) {
+            userMessage.innerHTML = "In order to use the website you must create an account:"
+            signUpButten.style.display = "block";
         }
       }
       async function createUser() {
@@ -52,5 +62,4 @@
       }
     </script>
 
-  </body>
 </html>

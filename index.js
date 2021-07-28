@@ -10,11 +10,11 @@ app.get('/', function(req, res){
 });
 
 app.get('/add_puzzle', function(req, res){
-    res.sendFile(path.join(__dirname + '/public/add_puzzle_3.html'));
+    res.sendFile(path.join(__dirname + '/public/add_puzzle.html'));
 });
 
 app.get('/solver_view', function(req, res){
-    res.sendFile(path.join(__dirname + '/public/solver_view_2.html'));
+    res.sendFile(path.join(__dirname + '/public/solver_view.html'));
 });
 
 app.get('/view_puzzles', function(req, res){
