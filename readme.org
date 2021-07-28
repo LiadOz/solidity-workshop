@@ -1,5 +1,5 @@
-* TagMe
-** About
+#+OPTIONS: toc:nil
+* About
 TagMe is blockchain powered crowdsourcing platform for tagging images, each
 images and description is called a puzzle. Users can either post puzzles for
 other users to solve, or solve puzzles from other members. TagMe has a dedicated
@@ -8,7 +8,7 @@ worth.
 To make the tagging quality high each issuer and solver is given a score, the
 issuer scores depends on the number of times they disputed a solution and the
 score of solvers is determined by the number of disputes they have.
-** How to run TagMe
+* How to run TagMe
 Open a terminal in the root folder and run:
 #+begin_src sh
   npm install .
@@ -27,7 +27,7 @@ the Tag currency.
 
 On your favorite browser go to localhost:3000 and start using the site.
 
-*** Example Users
+** Example Users
 You could use the following private addresses as sample users:
 - 0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80
 - 0x59c6995e998f97a5a0044966f0945389dc9e86dae88c7a8412f4603b6b78690d

@@ -1,20 +1,6 @@
 
-# Table of Contents
 
-1.  [TagMe](#org900d88b)
-    1.  [About](#org15b59f1)
-    2.  [How to run TagMe](#org05e8afb)
-        1.  [Example Users](#orgbb42416)
-
-
-<a id="org900d88b"></a>
-
-# TagMe
-
-
-<a id="org15b59f1"></a>
-
-## About
+# About
 
 TagMe is blockchain powered crowdsourcing platform for tagging images, each
 images and description is called a puzzle. Users can either post puzzles for
@@ -26,9 +12,7 @@ issuer scores depends on the number of times they disputed a solution and the
 score of solvers is determined by the number of disputes they have.
 
 
-<a id="org05e8afb"></a>
-
-## How to run TagMe
+# How to run TagMe
 
 Open a terminal in the root folder and run:
 
@@ -48,9 +32,7 @@ the Tag currency.
 On your favorite browser go to localhost:3000 and start using the site.
 
 
-<a id="orgbb42416"></a>
-
-### Example Users
+## Example Users
 
 You could use the following private addresses as sample users:
 
