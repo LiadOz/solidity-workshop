@@ -1,8 +1,8 @@
 //SPDX-License-Identifier: Unlicense
 pragma solidity ^0.7.3;
 pragma experimental ABIEncoderV2; // needed to return arrays
-// EnumerableSet, EnumerableMap by OpenZeppelin
 
+import "@openzeppelin/contracts/utils/EnumerableSet.sol";
 import "contracts/Tags.sol";
 
 contract TagMe is Tags {
@@ -22,6 +22,7 @@ contract TagMe is Tags {
     }
 
     struct Puzzle {
+        uint puzzle_id;
         address issuer;
         string puzzle_string;
         string puzzle_desc;
@@ -36,8 +37,12 @@ contract TagMe is Tags {
         bool solved;
     }
 
+    uint puzzle_count = 0;
+    using EnumerableSet for EnumerableSet.UintSet;
+    EnumerableSet.UintSet puzzle_ids;
+    mapping (uint => Puzzle) puzzles;
+
     mapping (address => User) users;
-    Puzzle[] puzzles;
 
     function createUser() public {
         require(!users[msg.sender].active);
@@ -53,11 +58,14 @@ contract TagMe is Tags {
     function postPuzzle(string memory _p_string, string memory _desc, uint _reward,
                         uint _rating) public userAction returns(uint) {
         require(_rating <= MAX_SCORE);
-        puzzles.push(Puzzle(msg.sender, _p_string, _desc, _reward, _rating,
-                            Solution(address(0), "", false)));
-        users[msg.sender].puzzle_ids.push(puzzles.length - 1);
+        uint puzzle_id = puzzle_count;
+        puzzle_count += 1;
+        puzzle_ids.add(puzzle_id);
+        puzzles[puzzle_id] = Puzzle(puzzle_id, msg.sender, _p_string, _desc, _reward,
+                                    _rating, Solution(address(0), "", false));
+        users[msg.sender].puzzle_ids.push(puzzle_id);
         transfer(CONTRACT_ADDRESS, _reward);
-        return puzzles.length - 1;
+        return puzzle_id;
     }
 
     function postMultiplePuzzles(string[] memory _p_strings,
@@ -108,8 +116,22 @@ contract TagMe is Tags {
         users[p.issuer].puzzles_disputed++;
     }
 
-    function getPuzzles() public view returns (Puzzle[] memory) {
-        return puzzles;
+    function removePuzzle(uint _puzzle_id) public {
+        Puzzle memory p = puzzles[_puzzle_id];
+        require(msg.sender == p.issuer);
+        puzzle_ids.remove(_puzzle_id);
+        delete puzzles[_puzzle_id];
+    }
+
+    function getPuzzleCount() public view returns (uint) {
+        return puzzle_ids.length();
+    }
+
+    function getPuzzle(uint _index) public view returns (Puzzle memory) {
+        // use this method to get all puzzles, use getPuzzleCount to find how
+        // much puzzles there are
+        uint puzzle_id = puzzle_ids.at(_index);
+        return puzzles[puzzle_id];
     }
 
     function calculateRating(address _user) public view returns(uint) {
@@ -122,6 +144,10 @@ contract TagMe is Tags {
 
     function getUserData() public view userAction returns(User memory) {
         return users[msg.sender];
+    }
+
+    function getSpecificUser(address _user) public view userAction returns(User memory) {
+        return users[_user];
     }
 
 }

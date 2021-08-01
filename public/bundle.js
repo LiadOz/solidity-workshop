@@ -21,6 +21,10 @@ class App {
         await this.tm.disputePuzzle(puzzleId);
     }
 
+    async removePuzzle(puzzleId) {
+        await this.tm.removePuzzle(puzzleId);
+    }
+
     async getSolveablePuzzles() {
         await this.reloadData();
         const results = this.puzzles.filter(
@@ -81,7 +85,12 @@ class TagMe {
 
     async getUserData() {
         var result = await this.contract.getUserData();
-        return new User(result);
+        return new User(result, false);
+    }
+
+    async getSpecificUser(user_address) {
+        return new User(
+            await this.contract.getSpecificUser(user_address), true);
     }
 
     async createUser() {
@@ -108,11 +117,17 @@ class TagMe {
         await this.contract.disputePuzzle(puzzle_id);
     }
 
+    async removePuzzle(puzzle_id) {
+        await this.contract.removePuzzle(puzzle_id);
+    }
+
     async getPuzzles() {
-        const puzzles = await this.contract.getPuzzles();
+        const puzzleCount = await this.contract.getPuzzleCount();
         var parsed = [];
-        for (var i = 0; i < puzzles.length; i++) {
-            parsed.push(new Puzzle(puzzles[i], i));
+        for (var i = 0; i < puzzleCount; i++) {
+            var puzzle = new Puzzle(await this.contract.getPuzzle(i))
+            puzzle.addIssuerData(await this.getSpecificUser(puzzle.issuer));
+            parsed.push(puzzle);
         }
         return parsed;
     }
@@ -126,14 +141,19 @@ class TagMe {
 }
 
 class Puzzle {
-    constructor(object, id) {
-        this.issuer = object[0];
-        this.img = object[1];
-        this.desc = object[2];
-        this.reward = object[3].toNumber();
-        this.rating = object[4].toNumber();
-        this.solution = new Solution(object[5]);
-        this.id = id;
+    constructor(object) {
+        this.id = object[0].toNumber();
+        this.issuer = object[1];
+        this.img = object[2];
+        this.desc = object[3];
+        this.reward = object[4].toNumber();
+        this.rating = object[5].toNumber();
+        this.solution = new Solution(object[6]);
+    }
+
+    addIssuerData(user) {
+        this.issuer_puzzles_completed = user.created_puzzles_completed;
+        this.issuer_puzzles_disputed = user.puzzles_disputed;
     }
 
     isSolved() {
@@ -150,14 +170,18 @@ class Solution {
 }
 
 class User {
-    constructor(object) {
-        this.active = object[0];
-        this.solved = object[1].toNumber();
-        this.dispute = object[2].toNumber();
-        this.puzzle_ids = [];
-        for(let id of object[3]) {
-            this.puzzle_ids.push(id.toNumber());
+    constructor(object, only_disputes) {
+        if (!only_disputes) {
+            this.active = object[0];
+            this.solved = object[1].toNumber();
+            this.dispute = object[2].toNumber();
+            this.puzzle_ids = [];
+            for(let id of object[3]) {
+                this.puzzle_ids.push(id.toNumber());
+            }
         }
+        this.created_puzzles_completed = object[4].toNumber();
+        this.puzzles_disputed = object[5].toNumber();
     }
 
     getUserPuzzles(allPuzzles) {
