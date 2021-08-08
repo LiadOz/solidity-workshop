@@ -119,6 +119,15 @@
       background-color: #f2f2f2;
       padding: 20px;
     }
+
+    .img-fluid {
+      /* width: auto; */
+      /* height: 300px; */
+      max-width: 1000px;
+      max-height: 300px;
+      position: relative;
+      margin: auto;
+  }
     </style>
   
     <nav class="nav justify-content-center">
@@ -139,7 +148,6 @@
     </nav>
 
 
-
   <body>
 
     <div class="jumbotron">
@@ -153,18 +161,19 @@
         <figcaption class="figure-caption">Solve the puzzle!</figcaption>
     </figure> -->
 
-        <div class="">
-          <img id="currentPuzzle" src="" style="width:100%">
-          <div id="currentPuzzleText" class="text">Caption Text</div>
+        <div class="col-4 mx-auto text-center">
+          <img id="currentPuzzle" src="" class="img-fluid" max>
+          <p id="currentPuzzleText" class="text-center"></p>
         </div>
 
             <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
             <a class="next" onclick="plusSlides(1)">&#10095;</a>
 
-    <div class="form-check" id="sortPuzzles">
+        <button type="button"  onclick="sortPuzzles()" class="btn btn-primary">sort puzzles by reward</button>
+    <!-- <div class="form-check" id="sortPuzzles">
         <input type="checkbox" class="form-check-input" >
         <label class="form-check-label" onclick="sortPuzzles()" for="exampleCheck1">Check to sort puzzles by reward</label>
-    </div>
+    </div> -->
 
     <form id="frm2">
         <div class="form-group">
@@ -196,10 +205,11 @@
             else {alert("No available puzzles")}
         }
 
-        async function showPuzzle(puzzleId){
-            if (puzzleId > puzzles.length) {puzzleId = 0}    
-            if (puzzleId < 1) {puzzleId = puzzles.length}
-            console.log("here2")
+        async function showPuzzle(_puzzleId){
+            if (_puzzleId >= puzzles.length) {puzzleId = 0}    
+            if (_puzzleId < 0) {puzzleId = (puzzles.length -1)}
+            console.log(puzzles.length)
+            console.log(puzzleId)
             var puzzle = puzzles[puzzleId];
             var pic = puzzle.img;
             var desc = puzzle.desc;
@@ -217,22 +227,6 @@
         function plusSlides(n) {
             showPuzzle(puzzleId += n);
         }
-
-        // function currentSlide(n) {
-        // showSlides(slideIndex = n);
-        // }
-
-        // function showSlides(n) {
-        // var i;
-        // var slides = document.getElementsByClassName("mySlides");
-        // if (n > slides.length) {slideIndex = 1}    
-        // if (n < 1) {slideIndex = slides.length}
-        // for (i = 0; i < slides.length; i++) {
-        //     slides[i].style.display = "none";  
-        // }
-        
-        // slides[slideIndex-1].style.display = "block";  
-        // }
 
     </script>
 
