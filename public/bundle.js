@@ -71,7 +71,7 @@ class App {
 
 class TagMe {
     async init() {
-        // await window.ethereum.enable(); // required by metamask or is it
+        await window.ethereum.enable(); // required by metamask or is it
 
         const provider = new ethers.providers.Web3Provider(window.ethereum);
         this.signer = provider.getSigner();
