@@ -9,9 +9,11 @@ contract TagMe is Tags {
     
     uint MAX_SCORE = 100;
     uint START_SCORE = 80;
+    uint SCORE_THRESHOLD = 2; // number of puzzles until start score becomes obsolete
     address CONTRACT_ADDRESS = address(this);
 
     struct User {
+        // holds information of every solver and puzzle issuer
         bool active;
         uint solved;
         uint disputes; // number of puzzles solved that are disputed
@@ -28,7 +30,8 @@ contract TagMe is Tags {
         string puzzle_desc;
         uint reward;
         uint rating;
-        Solution sol;
+        Solution sol; // the solution if it exists
+        bool disputed; 
     }
 
     struct Solution {
@@ -39,7 +42,7 @@ contract TagMe is Tags {
 
     uint puzzle_count = 0;
     using EnumerableSet for EnumerableSet.UintSet;
-    EnumerableSet.UintSet puzzle_ids;
+    EnumerableSet.UintSet puzzle_ids; // holds all the puzzles and allows O(1) deletion
     mapping (uint => Puzzle) puzzles;
 
     mapping (address => User) users;
@@ -50,11 +53,13 @@ contract TagMe is Tags {
         users[msg.sender] = User(true, 0, 0, ids, 0, 0);
     }
 
+    // modifier for any function only a registered user can use
     modifier userAction {
         require(users[msg.sender].active);
         _;
     }
     
+    // post a single puzzle
     function postPuzzle(string memory _p_string, string memory _desc, uint _reward,
                         uint _rating) public userAction returns(uint) {
         require(_rating <= MAX_SCORE);
@@ -62,12 +67,13 @@ contract TagMe is Tags {
         puzzle_count += 1;
         puzzle_ids.add(puzzle_id);
         puzzles[puzzle_id] = Puzzle(puzzle_id, msg.sender, _p_string, _desc, _reward,
-                                    _rating, Solution(address(0), "", false));
+                                    _rating, Solution(address(0), "", false), false);
         users[msg.sender].puzzle_ids.push(puzzle_id);
         transfer(CONTRACT_ADDRESS, _reward);
         return puzzle_id;
     }
 
+    // post multiple puzzles with same description, reward and rating
     function postMultiplePuzzles(string[] memory _p_strings,
                                  string memory _desc,
                                  uint _reward_per_puzzle,
@@ -77,12 +83,7 @@ contract TagMe is Tags {
         }
     }
 
-    function checkUser() public view returns(bool) {
-        if (users[msg.sender].active)
-            return true;
-        return false;
-    }
-
+    // post a soluiton to an unsolved puzzle
     function postSolution(string memory _solution, uint _puzzle_id)
         public userAction returns (bool) {
         Puzzle memory p = puzzles[_puzzle_id];
@@ -108,14 +109,17 @@ contract TagMe is Tags {
         return true;
     }
 
+    // used to dispute a puzzle
     function disputePuzzle(uint _puzzle_id) public {
         Puzzle memory p = puzzles[_puzzle_id];
-        require(msg.sender == p.issuer);
-
+        require(msg.sender == p.issuer); // make sure only issuer can dispute
+        require(p.disputed == false); // disable disputing twice
+        puzzles[_puzzle_id].disputed = true;
         users[p.sol.solver].disputes++;
         users[p.issuer].puzzles_disputed++;
     }
 
+    // used for user to remove a puzzle from the blockchain
     function removePuzzle(uint _puzzle_id) public {
         Puzzle memory p = puzzles[_puzzle_id];
         require(msg.sender == p.issuer);
@@ -127,9 +131,9 @@ contract TagMe is Tags {
         return puzzle_ids.length();
     }
 
+    // use this method to get all puzzles, use getPuzzleCount to find how
+    // much puzzles there are
     function getPuzzle(uint _index) public view returns (Puzzle memory) {
-        // use this method to get all puzzles, use getPuzzleCount to find how
-        // much puzzles there are
         uint puzzle_id = puzzle_ids.at(_index);
         return puzzles[puzzle_id];
     }
@@ -137,7 +141,7 @@ contract TagMe is Tags {
     function calculateRating(address _user) public view returns(uint) {
         require(users[_user].active);
         User memory user = users[_user];
-        if (user.solved < 10)
+        if (user.solved < SCORE_THRESHOLD)
             return START_SCORE;
         return MAX_SCORE * (1 - user.disputes / user.solved);
     }

@@ -149,11 +149,13 @@ class Puzzle {
         this.reward = object[4].toNumber();
         this.rating = object[5].toNumber();
         this.solution = new Solution(object[6]);
+        this.disputed = object[7];
     }
 
     addIssuerData(user) {
         this.issuer_puzzles_completed = user.created_puzzles_completed;
         this.issuer_puzzles_disputed = user.puzzles_disputed;
+        this.issuer_rating = user.puzzles_disputed / user.created_puzzles_completed;
     }
 
     isSolved() {

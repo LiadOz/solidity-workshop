@@ -74,14 +74,15 @@
           var cell5 = row.insertCell(4);
           var puzzleId = userPuzzles
           cell1.innerHTML = userPuzzles[i].id;
-          cell2.innerHTML = '<img src="userPuzzles[i].img" alt="..." class="img-thumbnail">';
+          cell2.innerHTML = '<img src="' + userPuzzles[i].img + '" alt="..." class="img-thumbnail">';
           cell3.innerHTML = userPuzzles[i].solution.result;
           cell4.innerHTML = userPuzzles[i].solution.solver;
-          cell5.innerHTML = '<button type="button"  onclick="disputePuzzle()" class="btn btn-primary">dispute</button>';
+          cell5.innerHTML = '<button type="button"  onclick="disputePuzzle(' + userPuzzles[i].id + ')" class="btn btn-primary">dispute</button>';
         }
       }  
     }
     async function disputePuzzle(puzzleId){
+        console.log(puzzleId)
       await app.disputePuzzle(puzzleId)
     }
     
