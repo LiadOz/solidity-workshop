@@ -10,6 +10,7 @@ contract TagMe is Tags {
     uint MAX_SCORE = 100;
     uint START_SCORE = 80;
     uint SCORE_THRESHOLD = 2; // number of puzzles until start score becomes obsolete
+    uint RESERVE_SECONDS = 60;
     address CONTRACT_ADDRESS = address(this);
 
     struct User {
@@ -32,6 +33,8 @@ contract TagMe is Tags {
         uint rating;
         Solution sol; // the solution if it exists
         bool disputed; 
+        uint reserved_time;
+        address reserved_by;
     }
 
     struct Solution {
@@ -67,7 +70,7 @@ contract TagMe is Tags {
         puzzle_count += 1;
         puzzle_ids.add(puzzle_id);
         puzzles[puzzle_id] = Puzzle(puzzle_id, msg.sender, _p_string, _desc, _reward,
-                                    _rating, Solution(address(0), "", false), false);
+                                    _rating, Solution(address(0), "", false), false, 0, address(0));
         users[msg.sender].puzzle_ids.push(puzzle_id);
         transfer(CONTRACT_ADDRESS, _reward);
         return puzzle_id;
@@ -83,16 +86,51 @@ contract TagMe is Tags {
         }
     }
 
-    // post a soluiton to an unsolved puzzle
-    function postSolution(string memory _solution, uint _puzzle_id)
-        public userAction returns (bool) {
-        Puzzle memory p = puzzles[_puzzle_id];
+    function checkUser() public view returns(bool) {
+        if (users[msg.sender].active)
+            return true;
+        return false;
+    }
 
-        // make sure the user can answer
+    // make sure user can answer
+    function canSolve(uint _puzzle_id) private view returns(bool) {
+        Puzzle memory p = puzzles[_puzzle_id];
         require(calculateRating(msg.sender) >= p.rating);
         if (p.sol.solved)
             return false;
+        return true;
+    }
 
+    // check if puzzle is reserved to sender
+    function checkReserved(uint _puzzle_id) private view returns(bool) {
+        Puzzle memory p = puzzles[_puzzle_id];
+        if (p.reserved_by == msg.sender && block.timestamp - p.reserved_time <= RESERVE_SECONDS)
+            return true;
+        return false;
+    } 
+
+    // reserve solution to prevent frontrunning
+    function reserveSolution(uint _puzzle_id) public userAction returns(bool) {
+        if (canSolve(_puzzle_id) == false)
+            return false;
+
+        Puzzle memory p = puzzles[_puzzle_id];
+        if (block.timestamp - p.reserved_time > RESERVE_SECONDS) {
+            puzzles[_puzzle_id].reserved_by = msg.sender;
+            puzzles[_puzzle_id].reserved_time = block.timestamp;
+            return true;
+        }
+        return false;
+    }
+
+    // post a soluiton to an unsolved puzzle
+    function postSolution(string memory _solution, uint _puzzle_id)
+        public userAction returns (bool) {
+
+        if (canSolve(_puzzle_id) == false || checkReserved(_puzzle_id) == false)
+            return false;
+
+        Puzzle memory p = puzzles[_puzzle_id];
         puzzles[_puzzle_id].sol = Solution(msg.sender, _solution, true);
         transferFromContract(msg.sender, p.reward);
 

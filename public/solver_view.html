@@ -191,8 +191,7 @@
       var puzzles = []
         async function addSolution() {
             var solution = document.getElementById("solution").value;
-            console.log(solution, puzzleId)
-            await app.postSolution(solution, puzzleId);
+            await app.postSolution(solution, puzzles[puzzleId].id);
         }
         async function getPuzzle() {
             await main();

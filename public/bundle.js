@@ -53,11 +53,13 @@ class App {
     csvSolutions() {
         const strings = [];
         const puzzles = this.getUserPuzzles();
+        strings.push(["id", "result", "disputed"].join(','));
         for(let puzzle of puzzles) {
             if (puzzle.solution.solved)
-                strings.push(puzzle.img + " " + puzzle.solution.result);
+                strings.push(
+                    [puzzle.id, puzzle.solution.result, puzzle.disputed].join(','));
         }
-        return strings.join(',');
+        return strings.join('\n');
     }
 
     async userExists() {
@@ -110,7 +112,14 @@ class TagMe {
     }
 
     async postSolution(solution, puzzle_id) {
-        await this.contract.postSolution(solution, puzzle_id);
+        const reseveSuccess = await this.contract.reserveSolution(puzzle_id);
+        if (!reseveSuccess) {
+            alert("Puzzle is reserved");
+            return
+        }
+        const solPosted = await this.contract.postSolution(solution, puzzle_id);
+        if (!solPosted)
+            alert("Solution cannot be posted");
     }
 
     async disputePuzzle(puzzle_id) {
