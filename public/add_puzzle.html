@@ -66,7 +66,6 @@
         var desc = document.getElementById("InputDescription").value;
         var reward = document.getElementById("InputReward").value;
         var rating = document.getElementById("InputRating").value;
-        console.log(puzzles, desc, reward, rating);
 
         await app.addPuzzles(puzzles.split(","), desc, reward, rating);
     }
@@ -74,7 +73,6 @@
 
     async function checkUser() {
         await main();
-      console.log("here");
         if (!(await app.userExists())) {
           console.log("not logeds");
           window.alert("You are not loged into an account, please log in or sign up");

@@ -12,9 +12,17 @@
     <script src="https://cdn.ethers.io/lib/ethers-5.0.umd.min.js"
             type="application/javascript"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-    <!-- <script language="javascript" type="text/javascript" src="web3.min.js"></script> -->
-    <!-- <script language="javascript" type="text/javascript" src="TagMe_abi.js"></script> -->
+
   </head>
+
+  <style>
+    .img-thumbnail {
+      max-width: 100px;
+      max-height: 100px;
+      }
+
+  </style>
+  
   <nav class="nav justify-content-center">
       <ul class="nav justify-content-center">
           <li class="nav-item">
@@ -33,8 +41,6 @@
   </nav>
   
   <body onload="checkUser()">
-
-
 <a id="csvFile", href="" download="solutios.csv">Export</a>
     <table class="table" id="viewTable">
         <thead>
@@ -46,7 +52,6 @@
             <th scope="col">dispute</th>
           </tr>
         </thead>
-
         <tbody>
           
         </tbody>
@@ -59,34 +64,36 @@
     userPuzzles = [];
     async function checkUser(){
         await main();
-        csv = app.csvSolutions();
+	      csv = app.csvSolutions();
         document.getElementById('csvFile').href =
             "data:text/csv;charset=utf-8," + escape(csv);
-        var i;
-        if (await app.userExists()) {
-            userPuzzles = await app.getUserPuzzles();
-            console.log(userPuzzles)
+      var i;
+      if (await app.userExists()) {
+        userPuzzles = await app.getUserPuzzles();
+      }
+      else{
+        window.alert("You are not loged into an account, please log in or sign up");
+        window.location.href = "/";
+      }
+      if (userPuzzles.length > 0){
+        var table = document.getElementById("viewTable");
+        for (i = 0; i < userPuzzles.length; i++){
+          var row = table.insertRow(1);
+          var cell1 = row.insertCell(0);
+          var cell2 = row.insertCell(1);
+          var cell3 = row.insertCell(2);
+          var cell4 = row.insertCell(3);
+          var cell5 = row.insertCell(4);
+          var puzzleId = userPuzzles
+          cell1.innerHTML = userPuzzles[i].id;
+          cell2.innerHTML = '<img src="' + userPuzzles[i].img + '" alt="..." class="img-thumbnail">';
+          cell3.innerHTML = userPuzzles[i].solution.result;
+          cell4.innerHTML = userPuzzles[i].solution.solver;
+          cell5.innerHTML = '<button type="button"  onclick="disputePuzzle(' + userPuzzles[i].id + ')" class="btn btn-primary" data-toggle="button" aria-pressed="false" autocomplete="off">dispute</button>';
         }
-        if (userPuzzles.length > 0){
-            var table = document.getElementById("viewTable");
-            for (i = 0; i < userPuzzles.length; i++){
-            var row = table.insertRow(1);
-            var cell1 = row.insertCell(0);
-            var cell2 = row.insertCell(1);
-            var cell3 = row.insertCell(2);
-            var cell4 = row.insertCell(3);
-            var cell5 = row.insertCell(4);
-            var puzzleId = userPuzzles
-            cell1.innerHTML = userPuzzles[i].id;
-            cell2.innerHTML = '<img src="' + userPuzzles[i].img + '" alt="..." class="img-thumbnail">';
-            cell3.innerHTML = userPuzzles[i].solution.result;
-            cell4.innerHTML = userPuzzles[i].solution.solver;
-            cell5.innerHTML = '<button type="button"  onclick="disputePuzzle(' + userPuzzles[i].id + ')" class="btn btn-primary">dispute</button>';
-            }
-        }  
+      }  
     }
     async function disputePuzzle(puzzleId){
-        console.log(puzzleId)
       await app.disputePuzzle(puzzleId)
     }
     

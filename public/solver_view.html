@@ -19,41 +19,7 @@
     body {font-family: Verdana, sans-serif; margin:0}
     .mySlides {display: none}
     img {vertical-align: middle;}
-    
-    /* Slideshow container */
-    .slideshow-container {
-      max-width: 1000px;
-      position: relative;
-      margin: auto;
-    }
-    
-    /* Next & previous buttons */
-    .prev, .next {
-      cursor: pointer;
-      position: absolute;
-      top: 50%;
-      width: auto;
-      padding: 16px;
-      margin-top: -22px;
-      color: white;
-      font-weight: bold;
-      font-size: 18px;
-      transition: 0.6s ease;
-      border-radius: 0 3px 3px 0;
-      user-select: none;
-    }
-    
-    /* Position the "next button" to the right */
-    .next {
-      right: 0;
-      border-radius: 3px 0 0 3px;
-    }
-    
-    /* On hover, add a black background color with a little bit see-through */
-    .prev:hover, .next:hover {
-      background-color: rgba(0,0,0,0.8);
-    }
-    
+        
     /* Caption text */
     .text {
       color: #f2f2f2;
@@ -63,30 +29,6 @@
       bottom: 0px;
       width: 100%;
       text-align: center;
-    }
-    
-    
-    /* Fading animation */
-    .fade {
-      -webkit-animation-name: fade;
-      -webkit-animation-duration: 1.5s;
-      animation-name: fade;
-      animation-duration: 1.5s;
-    }
-    
-    @-webkit-keyframes fade {
-      from {opacity: .4} 
-      to {opacity: 1}
-    }
-    
-    @keyframes fade {
-      from {opacity: .4} 
-      to {opacity: 1}
-    }
-    
-    /* On smaller screens, decrease text size */
-    @media only screen and (max-width: 300px) {
-      .prev, .next,.text {font-size: 11px}
     }
     
     input[type=text], select {
@@ -121,8 +63,6 @@
     }
 
     .img-fluid {
-      /* width: auto; */
-      /* height: 300px; */
       max-width: 1000px;
       max-height: 300px;
       position: relative;
@@ -148,32 +88,20 @@
     </nav>
 
 
-  <body>
+    <body onload="checkUser()">
 
     <div class="jumbotron">
-        <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample" onclick="getPuzzle()" aria-expanded="false" aria-controls="collapseExample">
-            Get Puzzle!
-        </button>
 
-    <!-- <img id="currentPuzzle" src="" text="" height="500" width="500"> -->
-     <!-- <figure class="figure" id="currentPuzzle">
-        <img src="..." class="figure-img img-fluid rounded">
-        <figcaption class="figure-caption">Solve the puzzle!</figcaption>
-    </figure> -->
+        <button type="button"  onclick="sortPuzzlesRewards()" class="btn btn-primary">Get puzzles sorted by reward</button>
+        <button type="button"  onclick="sortPuzzlesRate()" class="btn btn-primary">Get puzzles sorted by advertiser rating</button>
 
         <div class="col-4 mx-auto text-center">
           <img id="currentPuzzle" src="" class="img-fluid" max>
           <p id="currentPuzzleText" class="text-center"></p>
         </div>
 
-            <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
-            <a class="next" onclick="plusSlides(1)">&#10095;</a>
-
-        <button type="button"  onclick="sortPuzzles()" class="btn btn-primary">sort puzzles by reward</button>
-    <!-- <div class="form-check" id="sortPuzzles">
-        <input type="checkbox" class="form-check-input" >
-        <label class="form-check-label" onclick="sortPuzzles()" for="exampleCheck1">Check to sort puzzles by reward</label>
-    </div> -->
+        <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample" onclick="plusSlides(-1)" aria-expanded="false" aria-controls="collapseExample">Prev</button> 
+        <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample" onclick="plusSlides(1)" aria-expanded="false" aria-controls="collapseExample">Next</button> 
 
     <form id="frm2">
         <div class="form-group">
@@ -193,33 +121,37 @@
             var solution = document.getElementById("solution").value;
             await app.postSolution(solution, puzzles[puzzleId].id);
         }
-        async function getPuzzle() {
-            await main();
-            puzzles = await app.getSolveablePuzzles();
-            console.log(puzzles.length)
-            if (puzzles.length > 0){
-                puzzleId = puzzles.length - 1;
-                showPuzzle(puzzleId);
-            }
-            else {alert("No available puzzles")}
-        }
 
         async function showPuzzle(){
             if (puzzleId >= puzzles.length) {puzzleId = 0}    
             if (puzzleId < 0) {puzzleId = (puzzles.length -1)}
-            console.log(puzzles.length)
-            console.log(puzzleId)
             var puzzle = puzzles[puzzleId];
             var pic = puzzle.img;
             var desc = puzzle.desc;
-            console.log(pic)
-            console.log(desc)
             document.getElementById('currentPuzzle').src = pic;
             document.getElementById('currentPuzzleText').innerHTML = desc;
+            console.log(puzzle.reward)
         }
 
-        async function sortPuzzles() {
+        async function sortPuzzlesRewards() {
+            puzzles = await app.getSolveablePuzzles();
+            if (puzzles.length > 0){
+                puzzleId = puzzles.length - 1;
+            }
+            else {alert("No available puzzles")}
+
             puzzles = puzzles.sort((a,b) => (a.reward < b.reward));
+            puzzleId = 0;
+            showPuzzle();
+        }
+
+        async function sortPuzzlesRate() {
+            puzzles = await app.getSolveablePuzzles();
+            if (puzzles.length > 0){
+                puzzleId = puzzles.length - 1;
+            }
+            else {alert("No available puzzles")}
+            puzzles = puzzles.sort((a,b) => (a.issuer_rating < b.issuer_rating));
             puzzleId = 0;
             showPuzzle();
         }
@@ -229,6 +161,14 @@
             showPuzzle();
         }
 
+        async function checkUser() {
+        await main();
+        if (!(await app.userExists())) {
+          console.log("not logeds");
+          window.alert("You are not loged into an account, please log in or sign up");
+          window.location.href = "/";
+        }
+      }
     </script>
 
 </html>
