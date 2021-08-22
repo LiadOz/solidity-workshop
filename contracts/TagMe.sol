@@ -181,7 +181,7 @@ contract TagMe is Tags {
         User memory user = users[_user];
         if (user.solved < SCORE_THRESHOLD)
             return START_SCORE;
-        return MAX_SCORE * (1 - user.disputes / user.solved);
+        return MAX_SCORE - MAX_SCORE * user.disputes / user.solved;
     }
 
     function getUserData() public view userAction returns(User memory) {

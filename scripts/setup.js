@@ -46,21 +46,44 @@ async function setupUsers(contract) {
          "https://firstvet.com/uploaded/images/articles/_1200x600_crop_center-center_none/hypothyroid-dog.jpg",
          "https://cdn.britannica.com/22/206222-131-E921E1FB/Domestic-feline-tabby-cat.jpg",
         "https://images.theconversation.com/files/350865/original/file-20200803-24-50u91u.jpg?ixlib=rb-1.1.0&rect=37%2C29%2C4955%2C3293&q=45&auto=format&w=926&fit=clip"],
-        "Dog or a cat?", 500, 75);
+        "Dog or a cat?", 100, 10);
     await cws2.postMultiplePuzzles(
         ["https://ichef.bbci.co.uk/news/976/cpsprodpb/133D9/production/_98690887_gettyimages-92280592.jpg",
          "https://www.publicdomainpictures.net/pictures/280000/velka/frilled-lizard-1538482186mzE.jpg",
          "https://telepathicstuntman.com/wp-content/uploads/2017/08/western-sagebrush-lizard.jpg",
          "https://www.macmillandictionary.com/external/slideshow/thumb/lizard_thumb.jpg"],
-        "Koala or lizard", 300, 80);
+        "Koala or lizard?", 300, 80);
     await cws3.postMultiplePuzzles(
         ["https://static.zajo.net/content/mediagallery/zajo_dcat/image/product/types/X/9088.png",
-         "https://static.zajo.net/content/mediagallery/zajo_dcat/image/product/types/X/9088.png",
-         "https://static.zajo.net/content/mediagallery/zajo_dcat/image/product/types/X/9088.png",
          "https://www.helikon-tex.com/media/catalog/product/cache/4/image/9df78eab33525d08d6e5fb8d27136e95/s/p/sp-pgm-dc-11.jpg",
          "https://cdn.shopify.com/s/files/1/0007/0051/4360/products/WVAWB-H08326_PLA_00_1000x.jpg?v=1571712237"],
-        "Shirt or pants", 200, 82);
+        "Shirt or pants?", 200, 82);
+  // starting at 12
+    await cws4.postMultiplePuzzles(
+        ["https://allhdwallpapers.com/wp-content/uploads/2016/06/Duck-7-1024x640.jpg",
+         "https://allhdwallpapers.com/wp-content/uploads/2016/06/Duck-6-1024x640.jpg",
+         "https://allhdwallpapers.com/wp-content/uploads/2016/07/Butterfly-7-1024x768.jpg",
+         "https://allhdwallpapers.com/wp-content/uploads/2016/07/Butterfly-6-1024x640.jpg"],
+        "Duck or butterfly?", 200, 50);
 
+    await cws5.reserveSolution(12);
+    await cws5.postSolution("butterfly", 12);
+    await cws5.reserveSolution(13);
+    await cws5.postSolution("butterfly", 13);
+    await cws5.reserveSolution(14);
+    await cws5.postSolution("duck", 14);
+    await cws5.reserveSolution(15);
+    await cws5.postSolution("buttefly", 15);
+    await cws4.disputePuzzle(12);
+    await cws4.disputePuzzle(13);
+    await cws4.disputePuzzle(14);
+
+    await cws4.postMultiplePuzzles(
+        ["https://allhdwallpapers.com/wp-content/uploads/2016/03/Leopard-10-1024x768.jpg",
+         "https://allhdwallpapers.com/wp-content/uploads/2016/03/Leopard-3-1024x576.jpg",
+         "https://allhdwallpapers.com/wp-content/uploads/2017/05/French-Bulldog-1-1024x768.jpg",
+         "https://allhdwallpapers.com/wp-content/uploads/2017/05/French-Bulldog-4-1024x640.jpg"],
+        "Leaopard or bulldog?", 1000, 70);
 }
 
 // We recommend this pattern to be able to use async/await everywhere

@@ -63,10 +63,13 @@
     var csv = "";
     userPuzzles = [];
     async function checkUser(){
-        await main();
-	      csv = app.csvSolutions();
+      await main();
+      try {
+        csv = app.csvSolutions();
         document.getElementById('csvFile').href =
             "data:text/csv;charset=utf-8," + escape(csv);
+      } catch (e) {
+      }
       var i;
       if (await app.userExists()) {
         userPuzzles = await app.getUserPuzzles();

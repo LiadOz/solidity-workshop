@@ -164,7 +164,7 @@ class Puzzle {
     addIssuerData(user) {
         this.issuer_puzzles_completed = user.created_puzzles_completed;
         this.issuer_puzzles_disputed = user.puzzles_disputed;
-        this.issuer_rating = user.puzzles_disputed / user.created_puzzles_completed;
+        this.issuer_rating = 1 - user.puzzles_disputed / user.created_puzzles_completed;
     }
 
     isSolved() {
